@@ -109,7 +109,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v71: </strong>Added Alot Of New Games<strong> •</strong> 
+      <strong>•</strong> <strong>Update v72: </strong>Added Alot Of New Games And Proxy Tutorial<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
@@ -119,6 +119,7 @@
     <center>
       <button id="onlineChatroomsButton" class="game-button">Online Chat</button>
       <button id="windowsEmulatorButton" class="game-button">Windows Emulator</button>
+      <button id="wedoProxy" class="game-button">WeDo Proxy</button>
       <button id="vex6Button" class="game-button">Vex 6</button>
       <button id="slowRoadsButton" class="game-button">Slow.Roads</button>
       <button id="clusterTrucksButton" class="game-button">Cluster Trucks</button>
@@ -273,7 +274,8 @@
           xx142b2Exe: "https://juegosgratispuntocom.github.io/games/html5/xx142-b2.exe/index.html",
           roadBlocks: "https://juegosgratispuntocom.github.io/games/html5/roadblocks/index.html",
           stickmanHook: "https://juegosgratispuntocom.github.io/games/html5/stickman-hook/index.html",
-          tinyFishing: "https://juegosgratispuntocom.github.io/games/html5/tiny-fishing/index.html"
+          tinyFishing: "https://juegosgratispuntocom.github.io/games/html5/tiny-fishing/index.html",
+          wedoProxy: "https://pastebin.com/raw/wTYHhAcy"
         };
 
         function openGameInNewTab(url, message="") {
@@ -348,9 +350,10 @@
         document.getElementById('roadBlocks').onclick = () => openGameInNewTab(urls.roadBlocks);
         document.getElementById('stickmanHook').onclick = () => openGameInNewTab(urls.stickmanHook);
         document.getElementById('tinyFishing').onclick = () => openGameInNewTab(urls.tinyFishing);
+        document.getElementById('wedoProxy').onclick = () => openGameInNewTab(urls.wedoProxy, "Follow The Instructions On The Page!");
 
 
-        
+        // GLOBAL MESSAGES CRAP
         const pastebinRawUrl = 'https://pastebin.com/raw/Jtgt3dS0'; 
         const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(pastebinRawUrl)}`;
         let lastMessage = "";
@@ -376,7 +379,7 @@
         setInterval(checkForGlobalMessage, 15000);
         checkForGlobalMessage(); 
 
-        // --- admin panel, delete later ---
+        // old admin panel, delete later
         const ADMIN_PASSWORD = "16502690"; 
         const adminLockBtn = document.getElementById('adminLockBtn');
         const adminToggleBtn = document.getElementById('adminToggleBtn');
