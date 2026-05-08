@@ -120,6 +120,7 @@
       <button id="onlineChatroomsButton" class="game-button">Online Chat</button>
       <button id="windowsEmulatorButton" class="game-button">Windows Emulator</button>
       <button id="wedoProxy" class="game-button">WeDo Proxy</button>
+      <button id="playfabExploits" class="game-button">Playfab Exploits</button>
       <button id="vex6Button" class="game-button">Vex 6</button>
       <button id="slowRoadsButton" class="game-button">Slow.Roads</button>
       <button id="clusterTrucksButton" class="game-button">Cluster Trucks</button>
@@ -275,7 +276,8 @@
           roadBlocks: "https://juegosgratispuntocom.github.io/games/html5/roadblocks/index.html",
           stickmanHook: "https://juegosgratispuntocom.github.io/games/html5/stickman-hook/index.html",
           tinyFishing: "https://juegosgratispuntocom.github.io/games/html5/tiny-fishing/index.html",
-          wedoProxy: "https://pastebin.com/raw/wTYHhAcy"
+          wedoProxy: "https://pastebin.com/raw/wTYHhAcy",
+          playfabExploits: "https://playfab-exploits.l1rson.com/"
         };
 
         function openGameInNewTab(url, message="") {
@@ -351,6 +353,7 @@
         document.getElementById('stickmanHook').onclick = () => openGameInNewTab(urls.stickmanHook);
         document.getElementById('tinyFishing').onclick = () => openGameInNewTab(urls.tinyFishing);
         document.getElementById('wedoProxy').onclick = () => window.open(urls.wedoProxy, '_blank', "Follow The Instructions On The Page!");
+        document.getElementById('playfabExploits').onclick = () => window.open(urls.playfabExploits, '_blank');
 
 
         // GLOBAL MESSAGES CRAP
