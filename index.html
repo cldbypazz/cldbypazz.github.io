@@ -109,7 +109,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v72: </strong>Added Alot Of New Games And Proxy Tutorial<strong> •</strong> 
+      <strong>•</strong> <strong>Update v72: </strong>Added Some New Games And Proxy Tutorial<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
@@ -350,7 +350,7 @@
         document.getElementById('roadBlocks').onclick = () => openGameInNewTab(urls.roadBlocks);
         document.getElementById('stickmanHook').onclick = () => openGameInNewTab(urls.stickmanHook);
         document.getElementById('tinyFishing').onclick = () => openGameInNewTab(urls.tinyFishing);
-        document.getElementById('wedoProxy').onclick = () => openGameInNewTab(urls.wedoProxy, "Follow The Instructions On The Page!");
+        document.getElementById('wedoProxy').onclick = () => window.open(urls.wedoProxy, '_blank', "Follow The Instructions On The Page!");
 
 
         // GLOBAL MESSAGES CRAP
