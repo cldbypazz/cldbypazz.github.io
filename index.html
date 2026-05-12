@@ -109,7 +109,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v75: </strong>Added More Games<strong> •</strong> 
+      <strong>•</strong> <strong>Update v76: </strong>Added More Games<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
@@ -184,6 +184,13 @@
       <button id="stickmanHook" class="game-button">Stickman Hook</button>
       <button id="tinyFishing" class="game-button">Tiny Fishing</button>
       <button id="subwaySurfers" class="game-button">Subway Surfers</button>
+      <button id="tanukiSunset" class="game-button">Tanuki Sunset</button>
+      <button id="nzPort" class="game-button">NZ Portable</button>
+      <button id="circleSurvivor" class="game-button">Circle Survivor</button>
+      <button id="earntoDie" class="game-button">Earn To Die</button>
+      <button id="bloonsTd" class="game-button">Bloons TD</button>
+      <button id="vampireSurvivors" class="game-button">Vampire Survivors</button>
+      <button id="idleRestaurants" class="game-button">Idle Restaurants</button>
     </center>
     
     <button id="adminToggleBtn">Open Panel</button>
@@ -281,7 +288,14 @@
           wedoProxy: "https://pastebin.com/raw/wTYHhAcy",
           playfabExploits: "https://playfab-exploits.l1rson.com/",
           wifiPass: "https://pastebin.com/raw/rnXUaAVr",
-          subwaySurfers: "https://juegosgratispuntocom.github.io/games/html5/subway-surfers-unity/miami.html"
+          subwaySurfers: "https://juegosgratispuntocom.github.io/games/html5/subway-surfers-unity/miami.html",
+          tanukiSunset: "https://juegosgratispuntocom.github.io/games/html5/tanuki-sunset/index.html",
+          nzPort: "https://juegosgratispuntocom.github.io/games/html5/nzp/index.html",
+          circleSurvivor: "https://juegosgratispuntocom.github.io/games/html5/circl-survivor/index.html",
+          earntoDie: "https://juegosgratispuntocom.github.io/games/html5/earn-to-die-2/index.html",
+          bloonsTd: "https://juegosgratispuntocom.github.io/games/flash/bloons-td-4/index.html",
+          vampireSurvivors: "https://juegosgratispuntocom.github.io/games/html5/vampire-survivors/index.html",
+          idleRestaurants: "https://juegosgratispuntocom.github.io/games/html5/idle-restaurants/index.html"
         };
 
         function openGameInNewTab(url, message="") {
@@ -303,7 +317,7 @@
         document.getElementById('theBackroomsButton').onclick = () => openGameInNewTab(urls.theBackrooms);
         document.getElementById('cookieClickerButton').onclick = () => openGameInNewTab(urls.cookieClicker);
         document.getElementById('driftHuntersButton').onclick = () => openGameInNewTab(urls.driftHunters);
-        document.getElementById('windowsEmulatorButton').onclick = () => openGameInNewTab(urls.windowsEmulator);
+        document.getElementById('windowsEmulatorButton').onclick = () => openGameInNewTab(urls.windowsEmulator, "Service May Be Down At Times. Check Back Later If It Wont Load.");
         document.getElementById('onlineChatroomsButton').onclick = () => openGameInNewTab(urls.onlineChatrooms, "JOIN THE BYPAZZ CHAT ROOM! \n\nNode Name: BYPAZZ \nNode Password: bypazz");
         document.getElementById('clickSpeedTest').onclick = () => window.open(urls.clickSpeedTest, '_blank');
         document.getElementById('superMarioBros').onclick = () => openGameInNewTab(urls.superMarioBros, "Credits To C.I.M.");
@@ -361,6 +375,13 @@
         document.getElementById('wifiPass').onclick = () => window.open(urls.wifiPass, '_blank', "THIS IS SIMPLY CREATED ONLY FOR USERS TO BE ABLE TO CONNECT TO OTHER WPS WIFI NETWORKS IF THEY NEED TO!");
         document.getElementById('doomGame').onclick = () => openGameInNewTab(urls.doomGame);
         document.getElementById('subwaySurfers').onclick = () => openGameInNewTab(urls.subwaySurfers);
+        document.getElementById('tanukiSunset').onclick = () => openGameInNewTab(urls.tanukiSunset);
+        document.getElementById('nzPort').onclick = () => openGameInNewTab(urls.nzPort);
+        document.getElementById('circleSurvivor').onclick = () => openGameInNewTab(urls.circleSurvivor);
+        document.getElementById('earntoDie').onclick = () => openGameInNewTab(urls.earntoDie);
+        document.getElementById('bloonsTd').onclick = () => openGameInNewTab(urls.bloonsTd);
+        document.getElementById('vampireSurvivors').onclick = () => openGameInNewTab(urls.vampireSurvivors);
+        document.getElementById('idleRestaurants').onclick = () => openGameInNewTab(urls.idleRestaurants);
 
 
         // GLOBAL MESSAGES CRAP
