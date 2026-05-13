@@ -6,6 +6,7 @@
     <title>Bypazz</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/png" href="/icon/bypazzicon.png" />
+    <script src="https://download.playfab.com/PlayFabSDK.js"></script>
     <style>
       html, body {
         margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden; overflow-y: auto;
@@ -17,6 +18,29 @@
         0%, 15% { background: #1a1a1a; }
         90%, 100% { background: #000; }
       }
+
+      /* USERNAME UI */
+      #userContainer {
+        position: fixed; top: 15px; left: 15px; z-index: 1000;
+        color: white; font-size: 18px; cursor: pointer; display: flex; align-items: center;
+      }
+      #usernameDisplay { padding: 5px 12px; transition: all 0.3s; border: 2px solid transparent; }
+      .edit-active {
+        border: 2px solid white !important; border-radius: 10px; 
+        background: rgba(255,255,255,0.1); outline: none; cursor: text;
+      }
+
+      /* BAN OVERLAY - FULL SCREEN BLOCKER */
+      #banOverlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: #ff0000; color: white; display: none;
+        flex-direction: column; justify-content: center; align-items: center;
+        z-index: 1000000; text-align: center;
+      }
+      #banOverlay h1 { font-size: 72px; margin: 0; font-weight: 900; }
+      #banOverlay p { font-size: 24px; margin: 20px 0; }
+      #banOverlay .timer { font-size: 32px; font-weight: bold; background: black; padding: 15px 30px; border-radius: 5px; }
+
       .splash {
         position: fixed; top:0; left:0; width:100vw; height:100vh;
         background-color: rgba(0,0,0,0.85); color: white; display: flex;
@@ -29,15 +53,8 @@
       .splash.showHint p { opacity: 1; }
       
       .simple-update {
-        position: absolute;
-        top: 15px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        color: white;
-        font-size: 16px;
-        z-index: 998;
-        pointer-events: none;
+        position: absolute; top: 15px; left: 0; width: 100%;
+        text-align: center; color: white; font-size: 16px; z-index: 998; pointer-events: none;
       }
 
       .game-button {
@@ -45,7 +62,7 @@
         font-size: 26px; width: 100%; cursor: pointer; border-radius: 10px;
         margin: 10px 0; max-width: 600px; display: block;
       }
-      center { margin-top: 70px; margin-bottom: 80px; }
+      center { margin-top: 100px; margin-bottom: 80px; }
       
       #globalBanner {
         position: fixed; top: 0; left: 0; width: 100%;
@@ -53,20 +70,11 @@
         padding: 15px; font-weight: bold; font-size: 20px; z-index: 99999;
         display: none; box-shadow: 0 4px 6px rgba(0,0,0,0.5);
       }
-      #adminLockBtn {
-        position: fixed; bottom: 15px; right: 15px;
-        width: 40px; height: 40px; border-radius: 50%;
-        background-color: rgba(255,255,255,0.1); border: none;
-        font-size: 20px; cursor: pointer; z-index: 9999;
-        display: flex; align-items: center; justify-content: center;
-        opacity: 0.3; transition: opacity 0.2s;
-      }
-      #adminLockBtn:hover { opacity: 1; }
+      
       #adminToggleBtn {
         position: fixed; bottom: 15px; right: 15px; padding: 10px 20px;
         background-color: #000; color: #fff; border: 1px solid red;
-        border-radius: 8px; cursor: pointer; z-index: 9999; display: none;
-        font-family: 'Roboto Mono', monospace;
+        border-radius: 8px; cursor: pointer; z-index: 9999;
       }
       #adminOverlay {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -86,21 +94,24 @@
         color: white; border: none; border-radius: 6px; font-weight: bold;
         margin-bottom: 10px; font-family: 'Roboto Mono', monospace; font-size: 16px;
       }
-      .admin-modal .cancel-btn { background-color: transparent; border: 1px solid #555; color: #aaa; }
       
       #liveTracker {
-        position: fixed;
-        bottom: 15px;
-        left: 15px;
-        color: #ff0000;
-        font-size: 14px;
-        font-family: 'Roboto Mono', monospace;
-        z-index: 998; 
-        pointer-events: none;
+        position: fixed; bottom: 15px; left: 15px;
+        color: #ff0000; font-size: 14px; z-index: 998; pointer-events: none;
       }
     </style>
   </head>
   <body>
+    <div id="banOverlay">
+        <h1>YOU ARE BANNED!</h1>
+        <p id="banReasonText">Reason: Unknown</p>
+        <div class="timer" id="banCountdown">Calculating...</div>
+    </div>
+
+    <div id="userContainer">
+        <span id="usernameDisplay" contenteditable="false" spellcheck="false">Loading...</span>
+    </div>
+
     <div id="globalBanner"></div>
 
     <div class="splash" id="splashScreen">
@@ -109,7 +120,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v76: </strong>Added More Games<strong> •</strong> 
+      <strong>•</strong> <strong>Update v76: TEST UPDATE! ALL GAMES WILL BE ADDED BACK SHORTLY!</strong> <strong>•</strong> 
     </div>
     
     <div id="liveTracker">
@@ -117,103 +128,145 @@
     </div>
 
     <center>
-      <button id="onlineChatroomsButton" class="game-button">Online Chat</button>
-      <button id="windowsEmulatorButton" class="game-button">Windows Emulator</button>
-      <button id="wedoProxy" class="game-button">WeDo Proxy</button>
-      <button id="wifiPass" class="game-button">Wifi Passwords</button>
-      <button id="playfabExploits" class="game-button">Playfab Exploits</button>
       <button id="vex6Button" class="game-button">Vex 6</button>
       <button id="slowRoadsButton" class="game-button">Slow.Roads</button>
       <button id="clusterTrucksButton" class="game-button">Cluster Trucks</button>
-      <button id="motoX3MButton" class="game-button">Moto.X3M</button>
-      <button id="snowRider3DButton" class="game-button">Snow Rider 3D</button>
-      <button id="happyWheelsButton" class="game-button">Happy Wheels</button>
-      <button id="theBackroomsButton" class="game-button">Backrooms Game</button>
-      <button id="cookieClickerButton" class="game-button">Cookie Clicker</button>
-      <button id="driftHuntersButton" class="game-button">Drift Hunters</button>
-      <button id="clickSpeedTest" class="game-button">Click Speed Test</button>
-      <button id="superMarioBros" class="game-button">Super Mario Bros</button>
-      <button id="twentyFourtyEight" class="game-button">2048</button>
-      <button id="onevOneLol" class="game-button">1v1 Lol</button>
-      <button id="amongUs" class="game-button">Among Us</button>
-      <button id="baldisBasics" class="game-button">Baldis Basics</button>
-      <button id="ballSort" class="game-button">Ball Sort</button>
-      <button id="bitLife" class="game-button">BitLife</button>
-      <button id="chromeDino" class="game-button">Chrome Dino</button>
-      <button id="driftBoss" class="game-button">Drift Boss</button>
-      <button id="flappyBird" class="game-button">Flappy Bird</button>
-      <button id="geometryDash" class="game-button">Geometry Dash Lite</button>
-      <button id="geometryDashSubzero" class="game-button">Geometry Dash Subzero</button>
-      <button id="googleSnake" class="game-button">Google Snake</button>
-      <button id="minecraftWeb" class="game-button">Minecraft</button>
-      <button id="slopeOne" class="game-button">Slope</button>
-      <button id="stackGame" class="game-button">Stack</button>
-      <button id="fiveNights" class="game-button">FNAF</button>
-      <button id="templeRun" class="game-button">Temple Run</button>
-      <button id="tunnelRush" class="game-button">Tunnel Rush</button>
-      <button id="memoryGame" class="game-button">Memory Game</button>
-      <button id="coreBall" class="game-button">Core Ball</button>
-      <button id="runThree" class="game-button">Run 3</button>
-      <button id="fruitNinja" class="game-button">Fruit Ninja</button>
-      <button id="raftwarsTwo" class="game-button">Raft Wars 2</button>
-      <button id="timeShooter" class="game-button">Time Shooter</button>
-      <button id="stickDuel" class="game-button">Stick Duel</button>
-      <button id="rooftopSnipers" class="game-button">Rooftop Snipers</button>
-      <button id="tubeJumpers" class="game-button">Tube Jumpers</button>
-      <button id="gravityGuy" class="game-button">Gravity Guy</button>
-      <button id="doodleJump" class="game-button">Doodle Jump</button>
-      <button id="monkeyMart" class="game-button">Monkey Mart</button>
-      <button id="deathRun" class="game-button">Death Run</button>
-      <button id="normalTetris" class="game-button">Tetris</button>
-      <button id="sandTetris" class="game-button">Sand Tetris</button>
-      <button id="duckLife" class="game-button">Duck Life</button>
-      <button id="madalinstuntcarsOne" class="game-button">Madalin Stunt Cars</button>
-      <button id="madalinstuntcarsOnline" class="game-button">Madalin Stunt Cars Online</button>
-      <button id="fireboyandwaterGirl" class="game-button">Fireboy and Watergirl</button>
-      <button id="paperyPlanes" class="game-button">Papery Planes</button>
-      <button id="pacMan" class="game-button">Pac Man</button>
-      <button id="tomboftheMask" class="game-button">Tomb Of The Mask</button>
-      <button id="crossyRoad" class="game-button">Crossy Road</button>
-      <button id="bobtheRobber" class="game-button">Bob The Robber</button>
-      <button id="doomGame" class="game-button">Doom</button>
-      <button id="towercrashthreeDee" class="game-button">Tower Crash 3D</button>
-      <button id="pouGame" class="game-button">Pou</button>
-      <button id="mergeroundRacers" class="game-button">Merge Round Racers</button>
-      <button id="xx142b2Exe" class="game-button">xx142-b2.exe</button>
-      <button id="roadBlocks" class="game-button">Road Blocks</button>
-      <button id="stickmanHook" class="game-button">Stickman Hook</button>
-      <button id="tinyFishing" class="game-button">Tiny Fishing</button>
-      <button id="subwaySurfers" class="game-button">Subway Surfers</button>
-      <button id="tanukiSunset" class="game-button">Tanuki Sunset</button>
-      <button id="nzPort" class="game-button">NZ Portable</button>
-      <button id="circleSurvivor" class="game-button">Circle Survivor</button>
-      <button id="earntoDie" class="game-button">Earn To Die</button>
-      <button id="bloonsTd" class="game-button">Bloons TD</button>
-      <button id="vampireSurvivors" class="game-button">Vampire Survivors</button>
-      <button id="idleRestaurants" class="game-button">Idle Restaurants</button>
     </center>
     
-    <button id="adminToggleBtn">Open Panel</button>
+    <button id="adminToggleBtn">Admin Tools</button>
 
     <div id="adminOverlay">
       <div class="admin-modal">
-        <div id="adminPromptDiv">
-          <h2>Admin Access</h2>
-          <input type="password" id="adminPasswordInput" placeholder="Enter Password..." />
-          <button id="verifyBtn">Verify</button>
-          <button class="cancel-btn" id="cancelPromptBtn">Cancel</button>
-        </div>
-        <div id="adminPanelDiv" style="display: none;">
-          <h2>Broadcast Message</h2>
-          <input type="text" id="adminMessageInput" placeholder="Type global message..." />
-          <button id="sendBroadcastBtn">Send to Everyone</button>
-          <button class="cancel-btn" id="closePanelBtn">Hide Panel</button>
-          <p id="adminStatus" style="color: #aaa; margin-top: 10px;"></p>
-        </div>
+        <h2>Ban User</h2>
+        <input type="text" id="targetIdInput" placeholder="PlayFab ID..." />
+        <input type="text" id="banReasonInput" placeholder="Reason..." />
+        <input type="number" id="banHoursInput" placeholder="Hours (Leave blank for perm)" />
+        <button id="executeBanBtn">Apply Ban</button>
+        <button onclick="document.getElementById('adminOverlay').style.display='none'" style="background:transparent; border:1px solid #555;">Close</button>
       </div>
     </div>
 
     <script>
+        // --- PLAYFAB SETTINGS ---
+        PlayFab.settings.titleId = "1BA2E1"; 
+        let isUserBanned = false;
+
+        // --- AUTH & ACCOUNT PERSISTENCE ---
+        function getCustomId() {
+            let id = localStorage.getItem("bypazz_auth_id");
+            if (!id) {
+                id = 'user_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem("bypazz_auth_id", id);
+            }
+            return id;
+        }
+
+        function login() {
+            const request = {
+                TitleId: PlayFab.settings.titleId,
+                CustomId: getCustomId(),
+                CreateAccount: true,
+                InfoRequestParameters: { GetPlayerProfile: true, GetUserBans: true }
+            };
+
+            PlayFabClientSDK.LoginWithCustomID(request, (result, error) => {
+                if (result) {
+                    processLogin(result.data);
+                } else if (error && error.error === "AccountBanned") {
+                    location.reload(); 
+                }
+            });
+        }
+
+        function processLogin(data) {
+            const profile = data.InfoResultPayload.PlayerProfile;
+            const bans = data.InfoResultPayload.UserBans;
+
+            // Username Logic
+            let name = profile?.DisplayName || "User" + Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('usernameDisplay').innerText = name.substring(0,8);
+            saveUsername(name); // Auto-save even if not changed
+
+            // Ban Check
+            const activeBan = bans.find(b => b.Active);
+            if (activeBan) {
+                isUserBanned = true;
+                triggerBanUI(activeBan);
+            }
+        }
+
+        // --- USERNAME SYNC ---
+        const nameDisplay = document.getElementById('usernameDisplay');
+        nameDisplay.onclick = () => {
+            nameDisplay.contentEditable = true;
+            nameDisplay.classList.add('edit-active');
+            nameDisplay.focus();
+        };
+
+        nameDisplay.onkeydown = (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                nameDisplay.blur();
+            }
+        };
+
+        nameDisplay.onblur = () => {
+            nameDisplay.contentEditable = false;
+            nameDisplay.classList.remove('edit-active');
+            let newName = nameDisplay.innerText.trim();
+            if (newName.length > 8) newName = newName.substring(0, 8);
+            nameDisplay.innerText = newName;
+            saveUsername(newName);
+        };
+
+        function saveUsername(name) {
+            PlayFabClientSDK.UpdateUserTitleDisplayName({ DisplayName: name }, (res, err) => {
+                if (res) console.log("Sync: " + name);
+            });
+        }
+
+        // --- BAN MONITORING ---
+        function triggerBanUI(ban) {
+            document.getElementById('banOverlay').style.display = 'flex';
+            document.getElementById('banReasonText').innerText = "Reason: " + (ban.Reason || "Violating Terms");
+            
+            const expiry = ban.Expires ? new Date(ban.Expires) : null;
+            
+            function updateBanTimer() {
+                if (!expiry) {
+                    document.getElementById('banCountdown').innerText = "PERMANENT";
+                    return;
+                }
+                const now = new Date();
+                const diff = expiry - now;
+                if (diff <= 0) location.reload();
+
+                const y = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+                const mo = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+                const d = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('banCountdown').innerText = `${y}y ${mo}m ${d}d ${h}h ${m}m ${s}s`;
+            }
+            setInterval(updateBanTimer, 1000);
+            updateBanTimer();
+        }
+
+        // Check every 1 minute
+        setInterval(() => {
+            PlayFabClientSDK.GetPlayerCombinedInfo({
+                InfoRequestParameters: { GetUserBans: true }
+            }, (res) => {
+                if (res) {
+                    const activeBan = res.data.InfoResultPayload.UserBans.find(b => b.Active);
+                    if ((activeBan && !isUserBanned) || (!activeBan && isUserBanned)) location.reload();
+                }
+            });
+        }, 60000);
+
+        // --- GAME BUTTONS & SPLASH ---
         const splash = document.getElementById('splashScreen');
         setTimeout(() => splash.classList.add('showHint'), 1000);
         splash.addEventListener('click', () => {
@@ -225,256 +278,66 @@
           vex6: "https://script.google.com/macros/s/AKfycbzi5I00V5E4UoWKNwYMpazWyXDs1J4m0hui0937lFzMRKs31QGZ3rcUHRroAt13wmc9tw/exec",
           slowRoads: "https://script.google.com/macros/s/AKfycbzqDA2SnuVZ3DRelxxbUxSV9Z1RJz_gQfDRx06WUpgppWgrdDEErtZ1Lev9O6j2w9ioBQ/exec",
           clusterTrucks: "https://script.google.com/macros/s/AKfycbw6e8fflbfydV7kom5id09nKaM6ix0hLlXHbs3XHOnxzrndUgPtHUHENrwKomI2Hpk3/exec",
-          motoX3M: "https://script.google.com/macros/s/AKfycbw7_zG02ZMXnPSdwCx0CcmN8eX_0Bk3715TSP-Eglb1DyVhp7RxShuXq4qJ8Q2s7cnW/exec",
-          snowRider3D: "https://script.google.com/macros/s/AKfycbw5Z-Ryg_JfIIDYH7pzzPKXlr2tN0HCw-tT_ZvxBGDPsDDY41ewPVneVeLzelfpnBab/exec",
-          happyWheels: "https://script.google.com/macros/s/AKfycbyfMPVIGx6dJPrYKeE9e4Erj949-dH28pWVRjdV1vgnoylpBV8af03JNLoz2MwAIBLECg/exec",
-          theBackrooms: "https://storage.googleapis.com/test-41376.appspot.com/broom.html",
-          cookieClicker: "https://script.google.com/macros/s/AKfycbxGM35J29NkO-2LYjxWj_cA9IUaaXypkUy-LqXyLRbGTz0R6lXmAEapz1STN1jlTIRavw/exec",
-          driftHunters: "https://script.google.com/macros/s/AKfycbw8iHPqdVFEzquUYbNxFVAu1Tw4Nri5SWMRLdP_c7a84vCOHVG7YUWuhjSVptg1SVHr/exec",
-          windowsEmulator: "https://terminator.aeza.net/en/",
-          onlineChatrooms: "https://nodecrypt.runnertagvr.workers.dev/",
-          clickSpeedTest: "https://www.rapidtables.com/tools/click-test.html",
-          superMarioBros: "https://cim.alwaysdata.net/jeu/mario/index.html",
-          twentyFourtyEight: "https://juegosgratispuntocom.github.io/games/html5/2048/index.html",
-          onevOneLol: "https://juegosgratispuntocom.github.io/games/html5/1v1.lol/index.html",
-          amongUs: "https://juegosgratispuntocom.github.io/games/html5/among-us/index.html",
-          baldisBasics: "https://juegosgratispuntocom.github.io/games/html5/baldis-basics/index.html",
-          ballSort: "https://juegosgratispuntocom.github.io/games/html5/ball-sort-puzzle/index.html",
-          bitLife: "https://juegosgratispuntocom.github.io/games/html5/bitlife/index.html",
-          chromeDino: "https://juegosgratispuntocom.github.io/games/html5/chrome-dino/index.html",
-          driftBoss: "https://juegosgratispuntocom.github.io/games/html5/drift-boss/index.html",
-          flappyBird: "https://juegosgratispuntocom.github.io/games/html5/flappy-bird/index.html",
-          geometryDash: "https://juegosgratispuntocom.github.io/games/html5/geodash/index.html",
-          geometryDashSubzero: "https://juegosgratispuntocom.github.io/games/html5/geodash-subzero/index.html",
-          googleSnake: "https://juegosgratispuntocom.github.io/games/html5/google-snake/index.html",
-          minecraftWeb: "https://juegosgratispuntocom.github.io/games/html5/minecraft-1.5.2/index.html",
-          slopeOne: "https://juegosgratispuntocom.github.io/games/html5/slope/index.html",
-          stackGame: "https://juegosgratispuntocom.github.io/games/html5/stack/index.html",
-          fiveNights: "https://juegosgratispuntocom.github.io/games/html5/fnaf-2/index.html",
-          templeRun: "https://juegosgratispuntocom.github.io/games/html5/temple-run-2/index.html",
-          tunnelRush: "https://juegosgratispuntocom.github.io/games/html5/tunnel-rush/index.html",
-          memoryGame: "https://memory-gameeee.netlify.app/",
-          coreBall: "https://juegosgratispuntocom.github.io/games/html5/core-ball/index.html",
-          runThree: "https://juegosgratispuntocom.github.io/games/flash/run-3/index.html",
-          fruitNinja: "https://juegosgratispuntocom.github.io/games/html5/fruit-ninja/index.html",
-          raftwarsTwo: "https://juegosgratispuntocom.github.io/games/flash/raft-wars-2/index.html",
-          timeShooter: "https://krutansh123.github.io/kk-games-beta/timeshooter3.html",
-          stickDuel: "https://krutansh123.github.io/kk-games-beta/stickdual.html",
-          rooftopSnipers: "https://juegosgratispuntocom.github.io/games/html5/rooftop-snipers/index.html",
-          tubeJumpers: "https://juegosgratispuntocom.github.io/games/html5/tube-jumpers/index.html",
-          gravityGuy: "https://juegosgratispuntocom.github.io/games/flash/gravity-guy/index.html",
-          doodleJump: "https://juegosgratispuntocom.github.io/games/html5/doodle-jump/index.html",
-          monkeyMart: "https://juegosgratispuntocom.github.io/games/html5/monkeymart/index.html",
-          deathRun: "https://juegosgratispuntocom.github.io/games/html5/death-run-3d/index.html",
-          normalTetris: "https://juegosgratispuntocom.github.io/games/html5/twitch-tetris/index.html",
-          sandTetris: "https://juegosgratispuntocom.github.io/games/html5/sandtrix/index.html",
-          duckLife: "https://juegosgratispuntocom.github.io/games/flash/duck-life/index.html",
-          madalinstuntcarsOne: "https://juegosgratispuntocom.github.io/games/html5/madalin-stunt-cars-2/index.html",
-          madalinstuntcarsOnline: "https://juegosgratispuntocom.github.io/games/html5/madalin-stunt-cars-3/index.html",
-          fireboyandwaterGirl: "https://juegosgratispuntocom.github.io/games/html5/fireboy-and-watergirl-1/index.html",
-          paperyPlanes: "https://juegosgratispuntocom.github.io/games/html5/papery-planes/index.html",
-          pacMan: "https://juegosgratispuntocom.github.io/games/html5/pacman/index.html",
-          tomboftheMask: "https://juegosgratispuntocom.github.io/games/html5/totm/index.html",
-          crossyRoad: "https://juegosgratispuntocom.github.io/games/html5/crossy-road/index.html",
-          bobtheRobber: "https://juegosgratispuntocom.github.io/games/html5/bob-the-robber-2/index.html",
-          doomGame: "https://juegosgratispuntocom.github.io/games/html5/doom/index.html",
-          towercrashthreeDee: "https://juegosgratispuntocom.github.io/games/html5/tower-crash-3d/index.html",
-          pouGame: "https://juegosgratispuntocom.github.io/games/html5/pou/index.html",
-          mergeroundRacers: "https://juegosgratispuntocom.github.io/games/html5/merge-round-racers/index.html",
-          xx142b2Exe: "https://juegosgratispuntocom.github.io/games/html5/xx142-b2.exe/index.html",
-          roadBlocks: "https://juegosgratispuntocom.github.io/games/html5/roadblocks/index.html",
-          stickmanHook: "https://juegosgratispuntocom.github.io/games/html5/stickman-hook/index.html",
-          tinyFishing: "https://juegosgratispuntocom.github.io/games/html5/tiny-fishing/index.html",
-          wedoProxy: "https://pastebin.com/raw/wTYHhAcy",
-          playfabExploits: "https://playfab-exploits.l1rson.com/",
-          wifiPass: "https://pastebin.com/raw/rnXUaAVr",
-          subwaySurfers: "https://juegosgratispuntocom.github.io/games/html5/subway-surfers-unity/miami.html",
-          tanukiSunset: "https://juegosgratispuntocom.github.io/games/html5/tanuki-sunset/index.html",
-          nzPort: "https://juegosgratispuntocom.github.io/games/html5/nzp/index.html",
-          circleSurvivor: "https://juegosgratispuntocom.github.io/games/html5/circl-survivor/index.html",
-          earntoDie: "https://juegosgratispuntocom.github.io/games/html5/earn-to-die-2/index.html",
-          bloonsTd: "https://juegosgratispuntocom.github.io/games/flash/bloons-td-4/index.html",
-          vampireSurvivors: "https://juegosgratispuntocom.github.io/games/html5/vampire-survivors/index.html",
-          idleRestaurants: "https://juegosgratispuntocom.github.io/games/html5/idle-restaurants/index.html"
         };
 
-        function openGameInNewTab(url, message="") {
+        function openGameInNewTab(url) {
           const win = window.open("about:blank", "_blank");
-          if (!win) return alert("Popup blocked! Allow popups for this site.");
-          win.document.body.style.margin = '0'; win.document.body.style.height = '100vh'; win.document.body.style.backgroundColor = 'black';
+          if (!win) return alert("Popup blocked!");
+          win.document.body.style.margin = '0';
           const iframe = win.document.createElement('iframe');
           iframe.src = url; iframe.style.border = 'none'; iframe.style.width = '100vw'; iframe.style.height = '100vh';
           win.document.body.appendChild(iframe);
-          if(message) win.alert(message);
         }
 
         document.getElementById('vex6Button').onclick = () => openGameInNewTab(urls.vex6);
         document.getElementById('slowRoadsButton').onclick = () => openGameInNewTab(urls.slowRoads);
         document.getElementById('clusterTrucksButton').onclick = () => openGameInNewTab(urls.clusterTrucks);
-        document.getElementById('motoX3MButton').onclick = () => openGameInNewTab(urls.motoX3M);
-        document.getElementById('snowRider3DButton').onclick = () => openGameInNewTab(urls.snowRider3D);
-        document.getElementById('happyWheelsButton').onclick = () => openGameInNewTab(urls.happyWheels);
-        document.getElementById('theBackroomsButton').onclick = () => openGameInNewTab(urls.theBackrooms);
-        document.getElementById('cookieClickerButton').onclick = () => openGameInNewTab(urls.cookieClicker);
-        document.getElementById('driftHuntersButton').onclick = () => openGameInNewTab(urls.driftHunters);
-        document.getElementById('windowsEmulatorButton').onclick = () => openGameInNewTab(urls.windowsEmulator, "Service May Be Down At Times. Check Back Later If It Wont Load.");
-        document.getElementById('onlineChatroomsButton').onclick = () => openGameInNewTab(urls.onlineChatrooms, "JOIN THE BYPAZZ CHAT ROOM! \n\nNode Name: BYPAZZ \nNode Password: bypazz");
-        document.getElementById('clickSpeedTest').onclick = () => window.open(urls.clickSpeedTest, '_blank');
-        document.getElementById('superMarioBros').onclick = () => openGameInNewTab(urls.superMarioBros, "Credits To C.I.M.");
-        document.getElementById('twentyFourtyEight').onclick = () => openGameInNewTab(urls.twentyFourtyEight);
-        document.getElementById('onevOneLol').onclick = () => openGameInNewTab(urls.onevOneLol);
-        document.getElementById('amongUs').onclick = () => openGameInNewTab(urls.amongUs);
-        document.getElementById('baldisBasics').onclick = () => openGameInNewTab(urls.baldisBasics);
-        document.getElementById('ballSort').onclick = () => openGameInNewTab(urls.ballSort);
-        document.getElementById('bitLife').onclick = () => openGameInNewTab(urls.bitLife);
-        document.getElementById('chromeDino').onclick = () => openGameInNewTab(urls.chromeDino, "Press The Dino With Your Finger (Using Touchscreen) If It Doesnt Work With Your Mouse To Start!");
-        document.getElementById('driftBoss').onclick = () => openGameInNewTab(urls.driftBoss);
-        document.getElementById('flappyBird').onclick = () => openGameInNewTab(urls.flappyBird);
-        document.getElementById('geometryDash').onclick = () => openGameInNewTab(urls.geometryDash);
-        document.getElementById('geometryDashSubzero').onclick = () => openGameInNewTab(urls.geometryDashSubzero);
-        document.getElementById('googleSnake').onclick = () => openGameInNewTab(urls.googleSnake);
-        document.getElementById('minecraftWeb').onclick = () => openGameInNewTab(urls.minecraftWeb);
-        document.getElementById('slopeOne').onclick = () => openGameInNewTab(urls.slopeOne);
-        document.getElementById('stackGame').onclick = () => openGameInNewTab(urls.stackGame);
-        document.getElementById('fiveNights').onclick = () => openGameInNewTab(urls.fiveNights);
-        document.getElementById('templeRun').onclick = () => openGameInNewTab(urls.templeRun);
-        document.getElementById('tunnelRush').onclick = () => openGameInNewTab(urls.tunnelRush);
-        document.getElementById('memoryGame').onclick = () => openGameInNewTab(urls.memoryGame);
-        document.getElementById('coreBall').onclick = () => openGameInNewTab(urls.coreBall);
-        document.getElementById('runThree').onclick = () => openGameInNewTab(urls.runThree);
-        document.getElementById('fruitNinja').onclick = () => openGameInNewTab(urls.fruitNinja);
-        document.getElementById('raftwarsTwo').onclick = () => openGameInNewTab(urls.raftwarsTwo);
-        document.getElementById('timeShooter').onclick = () => openGameInNewTab(urls.timeShooter);
-        document.getElementById('stickDuel').onclick = () => openGameInNewTab(urls.stickDuel);
-        document.getElementById('rooftopSnipers').onclick = () => openGameInNewTab(urls.rooftopSnipers);
-        document.getElementById('tubeJumpers').onclick = () => openGameInNewTab(urls.tubeJumpers);
-        document.getElementById('gravityGuy').onclick = () => openGameInNewTab(urls.gravityGuy);
-        document.getElementById('doodleJump').onclick = () => openGameInNewTab(urls.doodleJump);
-        document.getElementById('monkeyMart').onclick = () => openGameInNewTab(urls.monkeyMart);
-        document.getElementById('deathRun').onclick = () => openGameInNewTab(urls.deathRun);
-        document.getElementById('normalTetris').onclick = () => openGameInNewTab(urls.normalTetris);
-        document.getElementById('sandTetris').onclick = () => openGameInNewTab(urls.sandTetris);
-        document.getElementById('duckLife').onclick = () => openGameInNewTab(urls.duckLife);
-        document.getElementById('madalinstuntcarsOne').onclick = () => openGameInNewTab(urls.madalinstuntcarsOne);
-        document.getElementById('madalinstuntcarsOnline').onclick = () => openGameInNewTab(urls.madalinstuntcarsOnline);
-        document.getElementById('fireboyandwaterGirl').onclick = () => openGameInNewTab(urls.fireboyandwaterGirl);
-        document.getElementById('paperyPlanes').onclick = () => openGameInNewTab(urls.PaperyPlanes);
-        document.getElementById('pacMan').onclick = () => openGameInNewTab(urls.pacMan);
-        document.getElementById('tomboftheMask').onclick = () => openGameInNewTab(urls.tomboftheMask);
-        document.getElementById('crossyRoad').onclick = () => openGameInNewTab(urls.crossyRoad);
-        document.getElementById('bobtheRobber').onclick = () => openGameInNewTab(urls.bobtheRobber);
-        document.getElementById('towercrashthreeDee').onclick = () => openGameInNewTab(urls.towercrashthreeDee, "Touch Screen Only!");
-        document.getElementById('pouGame').onclick = () => openGameInNewTab(urls.pouGame);
-        document.getElementById('mergeroundRacers').onclick = () => openGameInNewTab(urls.mergeroundRacers);
-        document.getElementById('xx142b2Exe').onclick = () => openGameInNewTab(urls.xx142b2Exe);
-        document.getElementById('roadBlocks').onclick = () => openGameInNewTab(urls.roadBlocks);
-        document.getElementById('stickmanHook').onclick = () => openGameInNewTab(urls.stickmanHook);
-        document.getElementById('tinyFishing').onclick = () => openGameInNewTab(urls.tinyFishing);
-        document.getElementById('wedoProxy').onclick = () => window.open(urls.wedoProxy, '_blank', "Follow The Instructions On The Page!");
-        document.getElementById('playfabExploits').onclick = () => window.open(urls.playfabExploits, '_blank');
-        document.getElementById('wifiPass').onclick = () => window.open(urls.wifiPass, '_blank', "THIS IS SIMPLY CREATED ONLY FOR USERS TO BE ABLE TO CONNECT TO OTHER WPS WIFI NETWORKS IF THEY NEED TO!");
-        document.getElementById('doomGame').onclick = () => openGameInNewTab(urls.doomGame);
-        document.getElementById('subwaySurfers').onclick = () => openGameInNewTab(urls.subwaySurfers);
-        document.getElementById('tanukiSunset').onclick = () => openGameInNewTab(urls.tanukiSunset);
-        document.getElementById('nzPort').onclick = () => openGameInNewTab(urls.nzPort);
-        document.getElementById('circleSurvivor').onclick = () => openGameInNewTab(urls.circleSurvivor);
-        document.getElementById('earntoDie').onclick = () => openGameInNewTab(urls.earntoDie);
-        document.getElementById('bloonsTd').onclick = () => openGameInNewTab(urls.bloonsTd);
-        document.getElementById('vampireSurvivors').onclick = () => openGameInNewTab(urls.vampireSurvivors);
-        document.getElementById('idleRestaurants').onclick = () => openGameInNewTab(urls.idleRestaurants);
 
-
-        // GLOBAL MESSAGES CRAP
+        // --- GLOBAL MESSAGES (PASTEBIN) ---
         const pastebinRawUrl = 'https://pastebin.com/raw/Jtgt3dS0'; 
         const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(pastebinRawUrl)}`;
         let lastMessage = "";
 
         async function checkForGlobalMessage() {
-            if (pastebinRawUrl === 'YOUR_PASTEBIN_RAW_URL_HERE') return; 
             try {
                 const response = await fetch(proxyUrl, { cache: "no-store" });
-                const currentText = await response.text();
-                const trimmedText = currentText.trim();
-
+                const trimmedText = (await response.text()).trim();
                 if (trimmedText !== lastMessage && trimmedText !== "") {
                     lastMessage = trimmedText;
                     const banner = document.getElementById('globalBanner');
-                    banner.innerText = trimmedText;
-                    banner.style.display = 'block';
+                    banner.innerText = trimmedText; banner.style.display = 'block';
                     setTimeout(() => { banner.style.display = 'none'; }, 10000);
                 }
-            } catch (error) {
-                console.error("Failed to check global message:", error);
-            }
+            } catch (e) {}
         }
         setInterval(checkForGlobalMessage, 15000);
-        checkForGlobalMessage(); 
+        checkForGlobalMessage();
 
-        // old admin panel, delete later
-        const ADMIN_PASSWORD = "16502690"; 
-        const adminLockBtn = document.getElementById('adminLockBtn');
-        const adminToggleBtn = document.getElementById('adminToggleBtn');
-        const adminOverlay = document.getElementById('adminOverlay');
-        const adminPromptDiv = document.getElementById('adminPromptDiv');
-        const adminPanelDiv = document.getElementById('adminPanelDiv');
-        const adminPasswordInput = document.getElementById('adminPasswordInput');
-        const verifyBtn = document.getElementById('verifyBtn');
-        const cancelPromptBtn = document.getElementById('cancelPromptBtn');
-        const adminMessageInput = document.getElementById('adminMessageInput');
-        const sendBroadcastBtn = document.getElementById('sendBroadcastBtn');
-        const closePanelBtn = document.getElementById('closePanelBtn');
-        const adminStatus = document.getElementById('adminStatus');
+        // --- ADMIN BUTTON LOGIC ---
+        document.getElementById('adminToggleBtn').onclick = () => {
+            document.getElementById('adminOverlay').style.display = 'flex';
+        };
 
-        adminLockBtn.onclick = () => {
-          adminOverlay.style.display = 'flex'; adminPromptDiv.style.display = 'block';
-          adminPanelDiv.style.display = 'none'; adminPasswordInput.value = ''; adminPasswordInput.focus();
-        };
-        cancelPromptBtn.onclick = () => adminOverlay.style.display = 'none';
-        verifyBtn.onclick = () => {
-          if (adminPasswordInput.value === ADMIN_PASSWORD) {
-            adminLockBtn.style.display = 'none'; adminPromptDiv.style.display = 'none';
-            adminPanelDiv.style.display = 'block'; adminMessageInput.focus();
-          } else {
-            window.location.reload(); 
-          }
-        };
-        adminPasswordInput.addEventListener("keypress", (e) => e.key === "Enter" && verifyBtn.click());
-        closePanelBtn.onclick = () => {
-          adminOverlay.style.display = 'none'; adminToggleBtn.style.display = 'block';
-        };
-        adminToggleBtn.onclick = () => {
-          adminOverlay.style.display = 'flex'; adminPanelDiv.style.display = 'block';
-          adminPromptDiv.style.display = 'none'; adminMessageInput.focus();
-        };
-        sendBroadcastBtn.onclick = async () => {
-          const text = adminMessageInput.value;
-          if (!text) return;
-          adminStatus.innerText = "Sending..."; adminStatus.style.color = "#aaa";
-          try {
-            const res = await fetch('/api/send-message', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ text: text, secretPassword: adminPasswordInput.value })
+        document.getElementById('executeBanBtn').onclick = () => {
+            const tid = document.getElementById('targetIdInput').value;
+            const reas = document.getElementById('banReasonInput').value;
+            const hrs = document.getElementById('banHoursInput').value;
+
+            PlayFabClientSDK.ExecuteCloudScript({
+                FunctionName: "AdminBanUser",
+                FunctionParameter: { targetId: tid, reason: reas, duration: hrs || null }
+            }, (res, err) => {
+                if (res && !res.data.Error) alert("User Banned!");
+                else alert("Failed. Ensure you have the 'admin' tag.");
             });
-            if (res.ok) {
-              adminStatus.innerText = "Message sent!"; adminStatus.style.color = "lightgreen";
-              adminMessageInput.value = '';
-              setTimeout(() => { closePanelBtn.click(); adminStatus.innerText = ""; }, 2000);
-            } else {
-              adminStatus.innerText = "Failed. Check Vercel logs."; adminStatus.style.color = "red";
-            }
-          } catch (err) {
-            adminStatus.innerText = "Network error."; adminStatus.style.color = "red";
-          }
         };
-        adminMessageInput.addEventListener("keypress", (e) => e.key === "Enter" && sendBroadcastBtn.click());
+
+        login();
     </script>
     
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
       import { getDatabase, ref, onValue, push, onDisconnect, set } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
-
-      // FIREBASE CONFIG STUFF
       const firebaseConfig = {
         apiKey: "AIzaSyAk-UfKf45Y9p01Vfkr574_Y45acEbIJzg",
         authDomain: "bypazz-online-users.firebaseapp.com",
@@ -484,13 +347,10 @@
         messagingSenderId: "154741065924",
         appId: "1:154741065924:web:49ddd5b319b1a10045e191"
       };
-
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
-
       const connectionsRef = ref(db, 'connections');
       const connectedRef = ref(db, '.info/connected');
-
       onValue(connectedRef, (snap) => {
         if (snap.val() === true) {
           const con = push(connectionsRef);
@@ -498,10 +358,8 @@
           set(con, true);
         }
       });
-      
       onValue(connectionsRef, (snap) => {
-        const count = snap.numChildren();
-        document.getElementById('userCount').innerText = count;
+        document.getElementById('userCount').innerText = snap.numChildren();
       });
     </script>
   </body>
