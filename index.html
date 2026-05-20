@@ -109,11 +109,11 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v78: </strong>Added a Button To Open This Site In "about:blank" For Extra Protection From People Seeing The Link<strong> •</strong> 
+      <strong>•</strong> <strong>Update v79: </strong>Fixed Online Users<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
-       Live Users: <span id="userCount">0</span> (not working)
+       Live Users: <span id="userCount">0</span>
     </div>
 
     <center>
@@ -484,33 +484,33 @@
         appId: "1:154741065924:web:49ddd5b319b1a10045e191"
       };
 
-  // Initialize Firebase
+  
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
 
-  // References to our elements and paths
+  
       const userCountSpan = document.getElementById('userCount');
       const connectionsRef = ref(db, 'connections');
       const connectedRef = ref(db, '.info/connected');
 
-  // 2. CONNECTION TRACKING LOGIC
+  
       onValue(connectedRef, (snap) => {
         if (snap.val() === true) {
-          // Add this session to the connections list
+          
           const con = push(connectionsRef);
 
-          // When this client disconnects, remove the connection node automatically
+          
           onDisconnect(con).remove();
 
-          // Set the value to true to log that we are here
+          
           set(con, true);
         }
       });
 
-      // 3. LIVE UPDATE (Updates instantly whenever someone joins/leaves)
+      
       onValue(connectionsRef, (snap) => {
         if (snap.exists()) {
-          // Count how many keys exist under the connections node
+          
           const count = Object.keys(snap.val()).length;
           userCountSpan.innerText = count;
         } else {
