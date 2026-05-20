@@ -109,7 +109,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v77: </strong>Removed Playfab Expliots Because Its Pointless To Be Here<strong> •</strong> 
+      <strong>•</strong> <strong>Update v78: </strong>Added a Button To Open This Site In about:blank For Extra Protection From People Seeing The Link<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
@@ -117,6 +117,7 @@
     </div>
 
     <center>
+      <button id="thisSite" class="game-button">OPEN THIS SITE IN about:blank</button>
       <button id="onlineChatroomsButton" class="game-button">Online Chat</button>
       <button id="windowsEmulatorButton" class="game-button">Windows Emulator</button>
       <button id="wedoProxy" class="game-button">WeDo Proxy</button>
@@ -293,7 +294,8 @@
           earntoDie: "https://juegosgratispuntocom.github.io/games/html5/earn-to-die-2/index.html",
           bloonsTd: "https://juegosgratispuntocom.github.io/games/flash/bloons-td-4/index.html",
           vampireSurvivors: "https://juegosgratispuntocom.github.io/games/html5/vampire-survivors/index.html",
-          idleRestaurants: "https://juegosgratispuntocom.github.io/games/html5/idle-restaurants/index.html"
+          idleRestaurants: "https://juegosgratispuntocom.github.io/games/html5/idle-restaurants/index.html",
+          thisSite: "https://cldbypazz.github.io/"
         };
 
         function openGameInNewTab(url, message="") {
@@ -379,6 +381,7 @@
         document.getElementById('bloonsTd').onclick = () => openGameInNewTab(urls.bloonsTd);
         document.getElementById('vampireSurvivors').onclick = () => openGameInNewTab(urls.vampireSurvivors);
         document.getElementById('idleRestaurants').onclick = () => openGameInNewTab(urls.idleRestaurants);
+        document.getElementById('thisSite').onclick = () => openGameInNewTab(urls.thisSite);
 
 
         // PASTEBIN GLOBAL MESSAGES CRAP
