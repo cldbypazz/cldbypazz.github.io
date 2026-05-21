@@ -109,7 +109,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v80: </strong>Added Version Checker So Updates Will Be Pushed<strong> •</strong> 
+      <strong>•</strong> <strong>Update v81: </strong>Added Some More Games<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
@@ -191,6 +191,16 @@
       <button id="bloonsTd" class="game-button">Bloons TD</button>
       <button id="vampireSurvivors" class="game-button">Vampire Survivors</button>
       <button id="idleRestaurants" class="game-button">Idle Restaurants</button>
+      <button id="getawayShootout" class="game-button">Getaway Shootout</button>
+      <button id="retroBowl" class="game-button">Retro Bowl</button>
+      <button id="smashKarts" class="game-button">Smash Karts</button>
+      <button id="savetheDoge" class="game-button">Save The Doge</button>
+      <button id="mineSweeper" class="game-button">Mine Sweeper</button>
+      <button id="crazycattleThreedee" class="game-button">Crazy Cattle 3D</button>
+      <button id="googleFeud" class="game-button">Google Feud</button>
+      <button id="solitaireGame" class="game-button">Solitaire</button>
+      <button id="pokerGame" class="game-button">Poker</button>
+      <button id="blackJack" class="game-button">Blackjack</button>
     </center>
     
     <button id="adminToggleBtn">Open Panel</button>
@@ -295,7 +305,17 @@
           bloonsTd: "https://juegosgratispuntocom.github.io/games/flash/bloons-td-4/index.html",
           vampireSurvivors: "https://juegosgratispuntocom.github.io/games/html5/vampire-survivors/index.html",
           idleRestaurants: "https://juegosgratispuntocom.github.io/games/html5/idle-restaurants/index.html",
-          thisSite: "https://cldbypazz.github.io/"
+          thisSite: "https://cldbypazz.github.io/",
+          getawayShootout: "https://juegosgratispuntocom.github.io/games/html5/getaway-shootout/index.html",
+          retroBowl: "https://juegosgratispuntocom.github.io/games/html5/retro-bowl/index.html",
+          smashKarts: "https://juegosgratispuntocom.github.io/games/html5/smash-karts/index.html",
+          savetheDoge: "https://juegosgratispuntocom.github.io/games/html5/save-the-doge/index.html",
+          mineSweeper: "https://juegosgratispuntocom.github.io/games/html5/minesweeper/index.html",
+          crazycattleThreedee: "https://juegosgratispuntocom.github.io/games/html5/crazy-cattle-3d/index.html",
+          googleFeud: "https://juegosgratispuntocom.github.io/games/html5/google-feud/index.html",
+          solitaireGame: "https://juegosgratispuntocom.github.io/games/html5/solitaire/index.html",
+          pokerGame: "https://juegosgratispuntocom.github.io/games/html5/poker/poker.html",
+          blackJack: "https://juegosgratispuntocom.github.io/games/html5/blackjack/index.html"
         };
 
         function openGameInNewTab(url, message="") {
@@ -382,10 +402,20 @@
         document.getElementById('vampireSurvivors').onclick = () => openGameInNewTab(urls.vampireSurvivors);
         document.getElementById('idleRestaurants').onclick = () => openGameInNewTab(urls.idleRestaurants);
         document.getElementById('thisSite').onclick = () => openGameInNewTab(urls.thisSite);
+        document.getElementById('getawayShootout').onclick = () => openGameInNewTab(urls.getawayShootout);
+        document.getElementById('retroBowl').onclick = () => openGameInNewTab(urls.retroBowl);
+        document.getElementById('smashKarts').onclick = () => openGameInNewTab(urls.smashKarts);
+        document.getElementById('savetheDoge').onclick = () => openGameInNewTab(urls.savetheDoge);
+        document.getElementById('mineSweeper').onclick = () => openGameInNewTab(urls.mineSweeper);
+        document.getElementById('crazycattleThreedee').onclick = () => openGameInNewTab(urls.crazycattleThreedee);
+        document.getElementById('googleFeud').onclick = () => openGameInNewTab(urls.googleFeud);
+        document.getElementById('solitaireGame').onclick = () => openGameInNewTab(urls.solitaireGame);
+        document.getElementById('pokerGame').onclick = () => openGameInNewTab(urls.pokerGame);
+        document.getElementById('blackJack').onclick = () => openGameInNewTab(urls.blackJack);
 
 
         // --- VERSION CHECKER SCRIPT ---
-        const CURRENT_VERSION = "80"; // VERSION
+        const CURRENT_VERSION = "81"; // VERSION
         const VERSION_URL = 'https://pastebin.com/raw/nr9ADxE7';
         const VERSION_PROXY = `https://api.allorigins.win/raw?url=${encodeURIComponent(VERSION_URL)}`;
 
