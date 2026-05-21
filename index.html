@@ -109,7 +109,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v79: </strong>Fixed Live Users<strong> •</strong> 
+      <strong>•</strong> <strong>Update v80: </strong>Added Version Checker So Updates Will Be Pushed<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
@@ -382,6 +382,36 @@
         document.getElementById('vampireSurvivors').onclick = () => openGameInNewTab(urls.vampireSurvivors);
         document.getElementById('idleRestaurants').onclick = () => openGameInNewTab(urls.idleRestaurants);
         document.getElementById('thisSite').onclick = () => openGameInNewTab(urls.thisSite);
+
+
+        // --- VERSION CHECKER SCRIPT ---
+        const CURRENT_VERSION = "80"; // VERSION
+        const VERSION_URL = 'https://pastebin.com/raw/nr9ADxE7';
+        const VERSION_PROXY = `https://api.allorigins.win/raw?url=${encodeURIComponent(VERSION_URL)}`;
+
+        async function checkVersion() {
+          
+            if (VERSION_URL.includes('YOUR_VERSION_PASTE_ID')) return;
+
+            try {
+                const response = await fetch(VERSION_PROXY, { cache: "no-store" });
+                if (!response.ok) throw new Error("Network response was not ok");
+        
+                const remoteVersion = await response.text();
+                const cleanedVersion = remoteVersion.trim();
+
+                if (cleanedVersion && cleanedVersion !== CURRENT_VERSION) {
+                    console.log(`New version detected: ${cleanedVersion}. Reloading...`);
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error("Failed to check version updates:", error);
+            }
+        }
+
+        setInterval(checkVersion, 120000);
+
+        checkVersion();
 
 
         // PASTEBIN GLOBAL MESSAGES CRAP
