@@ -109,7 +109,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v82: </strong>Added A Few More Games<strong> •</strong> 
+      <strong>•</strong> <strong>Update v83: </strong>Added Windows XP cause why tf not<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
@@ -120,6 +120,7 @@
       <button id="thisSite" class="game-button">about:blank</button>
       <button id="onlineChatroomsButton" class="game-button">Online Chat</button>
       <button id="windowsEmulatorButton" class="game-button">Windows Emulator</button>
+      <button id="windowsXp" class="game-button">Windows XP</button>
       <button id="wedoProxy" class="game-button">WeDo Proxy</button>
       <button id="wifiPass" class="game-button">Wifi Passwords</button>
       <button id="vex6Button" class="game-button">Vex 6</button>
@@ -319,7 +320,8 @@
           pokerGame: "https://juegosgratispuntocom.github.io/games/html5/poker/poker.html",
           blackJack: "https://juegosgratispuntocom.github.io/games/html5/blackjack/index.html",
           asmallworldCup: "https://juegosgratispuntocom.github.io/games/html5/a-small-world-cup/index.html",
-          tenminutesuntilDawn: "https://juegosgratispuntocom.github.io/games/html5/10-minutes-till-dawn/index.html"
+          tenminutesuntilDawn: "https://juegosgratispuntocom.github.io/games/html5/10-minutes-till-dawn/index.html",
+          windowsXp: "https://win32.run/"
         };
 
         function openGameInNewTab(url, message="") {
@@ -418,6 +420,7 @@
         document.getElementById('blackJack').onclick = () => openGameInNewTab(urls.blackJack);
         document.getElementById('asmallworldCup').onclick = () => openGameInNewTab(urls.asmallworldCup);
         document.getElementById('tenminutesuntilDawn').onclick = () => openGameInNewTab(urls.tenminutesuntilDawn);
+        document.getElementById('windowsXp').onclick = () => openGameInNewTab(urls.windowsXp, "Websites will still be blocked on here on internet explorer because it uses your devices browser instead of its own, also that makes it so some websites wont work.\n But this actually runs real windows xp and everything works.");
 
 
         // --- VERSION CHECKER SCRIPT ---
