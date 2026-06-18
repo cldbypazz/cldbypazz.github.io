@@ -423,7 +423,7 @@
         document.getElementById('asmallworldCup').onclick = () => openGameInNewTab(urls.asmallworldCup);
         document.getElementById('tenminutesuntilDawn').onclick = () => openGameInNewTab(urls.tenminutesuntilDawn);
         document.getElementById('windowsXp').onclick = () => openGameInNewTab(urls.windowsXp, "Websites will still be blocked on here on internet explorer because it uses your devices browser instead of its own, also that makes it so some websites wont work.\n But this actually runs real windows xp and everything works.");
-        document.getElementById('geminiMethod').onclick = () => openGameInNewTab(urls.geminiMethod, '_blank', "Follow The Instructions On The Page!");
+        document.getElementById('geminiMethod').onclick = () => window.open(urls.geminiMethod, '_blank', "Follow The Instructions On The Page!");
 
 
         // --- VERSION CHECKER SCRIPT ---
