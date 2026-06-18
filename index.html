@@ -109,7 +109,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v83: </strong>Added Windows XP cause why tf not<strong> •</strong> 
+      <strong>•</strong> <strong>Update v84: </strong>Final Update For The 25 - 26 School Year!<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
@@ -123,6 +123,7 @@
       <button id="windowsXp" class="game-button">Windows XP</button>
       <button id="wedoProxy" class="game-button">WeDo Proxy</button>
       <button id="wifiPass" class="game-button">Wifi Passwords</button>
+      <button id="geminiMethod" class="game-button">Gemini Method (unblock)</button>
       <button id="vex6Button" class="game-button">Vex 6</button>
       <button id="slowRoadsButton" class="game-button">Slow.Roads</button>
       <button id="clusterTrucksButton" class="game-button">Cluster Trucks</button>
@@ -321,7 +322,8 @@
           blackJack: "https://juegosgratispuntocom.github.io/games/html5/blackjack/index.html",
           asmallworldCup: "https://juegosgratispuntocom.github.io/games/html5/a-small-world-cup/index.html",
           tenminutesuntilDawn: "https://juegosgratispuntocom.github.io/games/html5/10-minutes-till-dawn/index.html",
-          windowsXp: "https://win32.run/"
+          windowsXp: "https://win32.run/",
+          geminiMethod: "https://pastebin.com/raw/7Y5waWm5"
         };
 
         function openGameInNewTab(url, message="") {
@@ -421,10 +423,11 @@
         document.getElementById('asmallworldCup').onclick = () => openGameInNewTab(urls.asmallworldCup);
         document.getElementById('tenminutesuntilDawn').onclick = () => openGameInNewTab(urls.tenminutesuntilDawn);
         document.getElementById('windowsXp').onclick = () => openGameInNewTab(urls.windowsXp, "Websites will still be blocked on here on internet explorer because it uses your devices browser instead of its own, also that makes it so some websites wont work.\n But this actually runs real windows xp and everything works.");
+        document.getElementById('geminiMethod').onclick = () => openGameInNewTab(urls.geminiMethod);
 
 
         // --- VERSION CHECKER SCRIPT ---
-        const CURRENT_VERSION = "83"; // VERSION
+        const CURRENT_VERSION = "84"; // VERSION
         const VERSION_URL = 'https://pastebin.com/raw/nr9ADxE7';
         const VERSION_PROXY = `https://api.allorigins.win/raw?url=${encodeURIComponent(VERSION_URL)}`;
 
