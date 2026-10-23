@@ -109,7 +109,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v85: </strong>New School Year Blocked Cleanup<strong> •</strong> 
+      <strong>•</strong> <strong>Update v86: </strong>Added a Few New Games<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
@@ -192,6 +192,7 @@
       <button id="idleRestaurants" class="game-button">Idle Restaurants</button>
       <button id="getawayShootout" class="game-button">Getaway Shootout</button>
       <button id="retroBowl" class="game-button">Retro Bowl</button>
+      <button id="retroBowlcollage" class="game-button">Retro Bowl Collage</button>
       <button id="smashKarts" class="game-button">Smash Karts</button>
       <button id="savetheDoge" class="game-button">Save The Doge</button>
       <button id="mineSweeper" class="game-button">Minesweeper</button>
@@ -202,6 +203,10 @@
       <button id="blackJack" class="game-button">Blackjack</button>
       <button id="asmallworldCup" class="game-button">A Small World Cup</button>
       <button id="tenminutesuntilDawn" class="game-button">10 Minutes Until Dawn</button>
+      <button id="asmallWorldcup" class="game-button">A Small World Cup</button>
+      <button id="mergeMelon" class="game-button">Merge Mellon</button>
+      <button id="plantsvsZombies" class="game-button">Plants VS Zombies</button>
+      <button id="rocketPult" class="game-button">Rocketpult</button>
     </center>
     
     <button id="adminToggleBtn">Open Panel</button>
@@ -318,6 +323,11 @@
           tenminutesuntilDawn: "https://juegosgratispuntocom.github.io/games/html5/10-minutes-till-dawn/index.html",
           windowsXp: "https://win32.run/",
           geminiMethod: "https://pastebin.com/raw/7Y5waWm5",
+          retroBowlcollage: "https://juegosgratispuntocom.github.io/games/html5/retro-bowl-college/index.html",
+          asmallWorldcup: "https://juegosgratispuntocom.github.io/games/html5/a-small-world-cup/index.html",
+          mergeMelon: "https://juegosgratispuntocom.github.io/games/html5/merge-melon/index.html",
+          plantsvsZombies: "https://juegosgratispuntocom.github.io/games/flash/pvz/index.html",
+          rocketPult: "https://juegosgratispuntocom.github.io/games/html5/rocketpult/index.html",
         };
 
         function openGameInNewTab(url, message="") {
@@ -415,10 +425,15 @@
         document.getElementById('tenminutesuntilDawn').onclick = () => openGameInNewTab(urls.tenminutesuntilDawn);
         document.getElementById('windowsXp').onclick = () => openGameInNewTab(urls.windowsXp, "Websites will still be blocked on here on internet explorer because it uses your devices browser instead of its own, also that makes it so some websites wont work.\n But this actually runs real windows xp and everything works.");
         document.getElementById('geminiMethod').onclick = () => window.open(urls.geminiMethod, '_blank', "Follow The Instructions On The Page");
+        document.getElementById('retroBowlcollage').onclick = () => openGameInNewTab(urls.retroBowlcollage);
+        document.getElementById('asmallWorldcup').onclick = () => openGameInNewTab(urls.asmallWorldcup);
+        document.getElementById('mergeMelon').onclick = () => openGameInNewTab(urls.mergeMelon, "Takes a Long Time To Load, But It Works");
+        document.getElementById('plantsvsZombies').onclick = () => openGameInNewTab(urls.plantsvsZombies);
+        document.getElementById('rocketPult').onclick = () => openGameInNewTab(urls.rocketPult);
 
 
         // --- VERSION CHECKER SCRIPT ---
-        const CURRENT_VERSION = "85"; // VERSION
+        const CURRENT_VERSION = "86"; // VERSION
         const VERSION_URL = 'https://pastebin.com/raw/nr9ADxE7';
         const VERSION_PROXY = `https://api.allorigins.win/raw?url=${encodeURIComponent(VERSION_URL)}`;
 
