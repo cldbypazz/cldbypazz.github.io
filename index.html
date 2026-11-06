@@ -117,6 +117,8 @@
     </div>
 
     <center>
+      <button id="gameSubmissions" class="game-button">REQUEST A GAME TO BE ADDED!</button>
+      
       <button id="thisSite" class="game-button">about:blank</button>
       <button id="onlineChatroomsButton" class="game-button">Online Chat</button>
       <button id="windowsEmulatorButton" class="game-button">Windows Emulator (down)</button>
@@ -328,6 +330,7 @@
           mergeMelon: "https://juegosgratispuntocom.github.io/games/html5/merge-melon/index.html",
           plantsvsZombies: "https://juegosgratispuntocom.github.io/games/flash/pvz/index.html",
           rocketPult: "https://juegosgratispuntocom.github.io/games/html5/rocketpult/index.html",
+          gameSubmissions: "https://forms.gle/YoP19P9T24chC4zv9"
         };
 
         function openGameInNewTab(url, message="") {
@@ -430,6 +433,7 @@
         document.getElementById('mergeMelon').onclick = () => openGameInNewTab(urls.mergeMelon, "Takes a Long Time To Load, But It Works");
         document.getElementById('plantsvsZombies').onclick = () => openGameInNewTab(urls.plantsvsZombies);
         document.getElementById('rocketPult').onclick = () => openGameInNewTab(urls.rocketPult);
+        document.getElementById('gameSubmissions').onclick = () => openGameInNewTab(urls.gameSubmissions);
 
 
         // --- VERSION CHECKER SCRIPT ---
