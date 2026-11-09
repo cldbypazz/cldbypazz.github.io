@@ -109,7 +109,7 @@
     </div>
     
     <div class="simple-update" id="updateLogger"> 
-      <strong>•</strong> <strong>Update v87: </strong>Added a Form For You Guys To Request New Games To Be Added<strong> •</strong> 
+      <strong>•</strong> <strong>Update v88: </strong>Added An AI And Some Shitty Game<strong> •</strong> 
     </div>
     
     <div id="liveTracker">
@@ -125,6 +125,7 @@
       <button id="wedoProxy" class="game-button">WeDo Proxy</button>
       <button id="wifiPass" class="game-button">Wifi Passwords</button>
       <button id="geminiMethod" class="game-button">YouTube & Gemini Unblock Method</button>
+      <button id="artificialIntelegence" class="game-button">AI</button>
       <button id="vex6Button" class="game-button">Vex 6</button>
       <button id="slowRoadsButton" class="game-button">Slow.Roads</button>
       <button id="clusterTrucksButton" class="game-button">Cluster Trucks</button>
@@ -208,6 +209,7 @@
       <button id="mergeMelon" class="game-button">Merge Mellon</button>
       <button id="plantsvsZombies" class="game-button">Plants VS Zombies</button>
       <button id="rocketPult" class="game-button">Rocketpult</button>
+      <button id="neonAscend" class="game-button">Neon Ascend</button>
     </center>
     
     <button id="adminToggleBtn">Open Panel</button>
@@ -329,7 +331,9 @@
           mergeMelon: "https://juegosgratispuntocom.github.io/games/html5/merge-melon/index.html",
           plantsvsZombies: "https://juegosgratispuntocom.github.io/games/flash/pvz/index.html",
           rocketPult: "https://juegosgratispuntocom.github.io/games/html5/rocketpult/index.html",
-          gameSubmissions: "https://forms.gle/YoP19P9T24chC4zv9"
+          gameSubmissions: "https://forms.gle/YoP19P9T24chC4zv9",
+          artificialIntelegence: "https://artiint.netlify.app/",
+          neonAscend: "https://neonascend.netlify.app/"
         };
 
         function openGameInNewTab(url, message="") {
@@ -433,10 +437,12 @@
         document.getElementById('plantsvsZombies').onclick = () => openGameInNewTab(urls.plantsvsZombies);
         document.getElementById('rocketPult').onclick = () => openGameInNewTab(urls.rocketPult);
         document.getElementById('gameSubmissions').onclick = () => openGameInNewTab(urls.gameSubmissions);
+        document.getElementById('artificialIntelegence').onclick = () => openGameInNewTab(urls.artificialIntelegence);
+        document.getElementById('neonAscend').onclick = () => openGameInNewTab(urls.neonAscend, "This Game Is VERY Buggy And Was Made By AI Just To See What AI Could Do, Dont Have High Expectations.");
 
 
         // -- VERSION CHECKER SCRIPT --
-        const CURRENT_VERSION = "87"; // VERSION
+        const CURRENT_VERSION = "88"; // VERSION
         const VERSION_URL = 'https://pastebin.com/raw/nr9ADxE7';
         const VERSION_PROXY = `https://api.allorigins.win/raw?url=${encodeURIComponent(VERSION_URL)}`;
 
